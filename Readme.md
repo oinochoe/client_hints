@@ -37,3 +37,36 @@ Accept-CH-Lifetime 헤더는 크롬 67에서 추가되어 Accept-CH 헤더에서
 - ect : 추정되는 connection type
 
 실제로 화면을 띄워서 브라우저 header 속성을 보면 확인하실 수 있어요 😄
+
+```html
+<!-- 크롬 카나리아 84빌드 -->
+<meta http-equiv="Accept-CH" content="UA, UA-Platform, UA-Arch, UA-Model, UA-Mobile, UA-Full-Version" />
+```
+
+다음은 크롬 카나리아 빌드에서 테스트 위한 코드입니다.
+
+- UA : 웹브라우저의 이름과 버전 (Accept-CH 헤더와 관계없이 전송됨)
+- UA-Platform : 플랫폼(OS)의 이름과 버전
+- UA-Arch : 플랫폼(OS)의 아키텍쳐
+- UA-Model : 기기 모델명
+- UA-Mobile : 기기의 모바일 여부 “?0” 또는 “?1”
+- UA-Full-Version : 웹브라우저의 버전 전체
+
+### https 환경이 아니라 나오지 않을 수 있습니다.
+
+### 이와 동시에 navigator.userAgentData 속성이 업데이트 될 예정입니다. (v8)
+
+```javascript
+// Low entropy values
+navigator.userAgentData.mobile;
+navigator.userAgentData.uaList;
+
+// High entropy values
+navigator.userAgentData.getHighEntropyValues([
+  "platform",
+  "platformVersion",
+  "architecture",
+  "model",
+  "uaFullVersion"
+]).then(res => console.log(res)); // Promise
+```
